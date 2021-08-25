@@ -16,7 +16,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     Optional<Note> getWithWriter(Long num);
 
     @EntityGraph(attributePaths = {"writer"} , type = EntityGraph.EntityGraphType.LOAD)
-    @Query("select n from Note n where n.wirter.email = :email")
+    @Query("select n from Note n where n.writer.email = :email")
     List<Note> getList(String email);
 
 
