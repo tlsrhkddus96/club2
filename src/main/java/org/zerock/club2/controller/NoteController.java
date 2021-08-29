@@ -38,6 +38,7 @@ public class NoteController {
         log.info("==========read=================");
         log.info(num);
 
+
         return new ResponseEntity<>(noteService.get(num), HttpStatus.OK);
 
     }

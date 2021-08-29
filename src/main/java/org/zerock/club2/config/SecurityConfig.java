@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.zerock.club2.security.filter.ApiCheckFilter;
+import org.zerock.club2.security.filter.ApiLoginFilter;
 import org.zerock.club2.security.handler.ClubLoginSuccessHandler;
 import org.zerock.club2.security.service.ClubUserDetailsService;
 
@@ -33,10 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin();
         http.csrf().disable();
-
+        http.logout();
         http.oauth2Login().successHandler(successHandler());
         http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);
 
+        http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(apiLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 
@@ -46,5 +51,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+    @Bean
+    public ApiLoginFilter apiLoginFilter() throws Exception{
+
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login");
+        apiLoginFilter.setAuthenticationManager(authenticationManager());
+
+        return apiLoginFilter;
+
+    }
+
+    @Bean
+    public ApiCheckFilter apiCheckFilter(){
+
+        return new ApiCheckFilter("/notes/**/*");
+    }
 
 }
