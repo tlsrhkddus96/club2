@@ -12,8 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.zerock.club2.security.filter.ApiCheckFilter;
 import org.zerock.club2.security.filter.ApiLoginFilter;
+import org.zerock.club2.security.handler.ApiLoginFailHandler;
 import org.zerock.club2.security.handler.ClubLoginSuccessHandler;
 import org.zerock.club2.security.service.ClubUserDetailsService;
+import org.zerock.club2.security.util.JWTUtil;
 
 @Configuration
 @Log4j2
@@ -21,6 +23,7 @@ import org.zerock.club2.security.service.ClubUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private ClubUserDetailsService userDetailsService;
+
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -43,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(apiLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 
+
     }
 
     @Bean
@@ -54,8 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ApiLoginFilter apiLoginFilter() throws Exception{
 
-        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login");
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager());
+        apiLoginFilter.setAuthenticationFailureHandler(new ApiLoginFailHandler());
 
         return apiLoginFilter;
 
@@ -64,7 +69,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ApiCheckFilter apiCheckFilter(){
 
-        return new ApiCheckFilter("/notes/**/*");
+        return new ApiCheckFilter("/notes/**/*", jwtUtil());
     }
+
+    @Bean
+    public JWTUtil jwtUtil(){
+        return new JWTUtil();
+    }
+
+
 
 }
