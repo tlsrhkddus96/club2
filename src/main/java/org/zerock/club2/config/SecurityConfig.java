@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new ApiCheckFilter("/notes/**/*", jwtUtil());
     }
 
+
     @Bean
     public JWTUtil jwtUtil(){
         return new JWTUtil();

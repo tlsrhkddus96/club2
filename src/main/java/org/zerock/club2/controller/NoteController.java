@@ -61,6 +61,8 @@ public class NoteController {
         log.info("===============remove==========");
         log.info(num);
 
+
+
         noteService.remove(num);
 
         return new ResponseEntity<>("removed",HttpStatus.OK);
