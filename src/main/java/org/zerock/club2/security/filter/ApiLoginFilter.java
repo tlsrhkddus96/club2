@@ -40,6 +40,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         return getAuthenticationManager().authenticate(authToken);
 
+
     }
 
     @Override

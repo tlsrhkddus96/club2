@@ -77,6 +77,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
         if(StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")){
             log.info("Authorization exist : " + authHeader);
 
+
             try{
                 String email = jwtUtil.validateAndExtract(authHeader.substring(7));
                 log.info("validate result  :" + email);

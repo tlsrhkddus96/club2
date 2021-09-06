@@ -10,6 +10,7 @@ public interface NoteService {
 
     Long register(NoteDTO noteDTO);
 
+
     NoteDTO get(Long num);
 
     void modify(NoteDTO noteDTO);
