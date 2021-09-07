@@ -33,6 +33,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         log.info("----------API Login Filter -------------");
         log.info("attempt Authentication");
 
+
         String email = request.getParameter("email");
         String pw = request.getParameter("pw");
 
