@@ -50,6 +50,7 @@ public class NoteServiceImpl implements NoteService{
 
         Long num = noteDTO.getNum();
 
+
         Optional<Note> result = noteRepository.findById(num);
 
         if(result.isPresent()){
